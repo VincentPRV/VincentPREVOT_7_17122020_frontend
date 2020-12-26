@@ -8,7 +8,7 @@
     <div id="nav">
       <router-link to="/">Connexion</router-link> |
       <router-link to="/actu">Actualités</router-link> |
-      <router-link to="/profil"><i class="far fa-user-circle"></i> Profil</router-link>
+      <router-link to="/profil"><i class="far fa-user-circle"></i> Profil de {{ user.username }} </router-link>
     </div>
   </div>
 </template>

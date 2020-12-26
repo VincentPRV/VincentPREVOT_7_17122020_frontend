@@ -10,10 +10,8 @@
       <ul class="ctn__detail">
         <li class="ctn__detail__username"><h1 >{{ user.username }}</h1></li>
         <li class="ctn__detail__email">{{ user.email }}</li>
-        
         <button type="button">Supprimer son profil</button>
       </ul>
-      
     </div>
   </div>
 </template>
@@ -56,22 +54,22 @@ export default {
 .ctn {
   display: flex;
   padding: 80px;
-  width: 60%;
+  width: 70%;
   &__image {
-    width: 50%;
+    width: 40%;
   }
   &__detail {
-    background-color: #F5F5F5;
+    background-image: url("../images/cyber-3400789_640.jpg");
     border-radius: 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     margin: auto;
-    width: 50%;
+    width: 60%;
+    height: 400px;
     padding: 20px;
-  }
-  
+  } 
 }
 
 ul {
@@ -82,9 +80,8 @@ li {
   height: 70px;
   width: 60%;
   margin: 10px 0px 10px 0px;
-
   background-color: white;
-  border-radius: 100px;
+  border-radius: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -97,7 +94,7 @@ button {
     width: 150px;
     height: 30px;
     font-weight: bold;
-    margin: 10px;
+    margin-top: 120px;
     border-radius: 15px;
     border-style: none;
     color: white;

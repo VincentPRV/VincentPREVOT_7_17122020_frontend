@@ -4,13 +4,13 @@
     <input
       type="text"
       name="username"
-      v-model="input.username"
+      v-model="user.username"
       placeholder="Nom d'utilisateur"
     />
     <input
       type="password"
       name="password"
-      v-model="input.password"
+      v-model="user.password"
       placeholder="Mot de passe"
     />
     <button type="button" v-on:click="login()">Connexion</button>
@@ -18,17 +18,35 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
+
   name: "Login",
   data() {
     return {
-      input: {
+      user: {
         username: "",
         password: "",
       },
     };
   },
-  methods: {},
+  methods: {
+     login() {
+      axios
+        .post("http://localhost:3000/api/auth/login", this.user,
+        {
+          headers: {
+                "Content-type": "application/json",
+                 }
+        })
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          alert(error);
+        });
+  },
+  },
 };
 </script>
 
@@ -66,6 +84,6 @@ export default {
       rgba(255, 23, 68, 1) 35%,
       rgba(183, 28, 28, 1) 100%
     );
-    }
+  }
 }
 </style>

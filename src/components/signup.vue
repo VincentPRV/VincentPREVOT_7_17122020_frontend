@@ -4,38 +4,61 @@
     <input
       type="text"
       name="username"
-      v-model="input.username"
+      required="required"
+      v-model="user.username"
       placeholder="Nom d'utilisateur"
     />
-     <input
+    <input
       type="email"
       name="email"
-      v-model="input.email"
+      v-model="user.email"
+      unique="true"
+      required="required"
       placeholder="e-mail"
+      pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]{2,15}$"
     />
     <input
       type="password"
       name="password"
-      v-model="input.password"
+      required="required"
+      v-model="user.password"
       placeholder="Mot de passe"
+      pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]{8,})$"
     />
-    <button type="button" v-on:click="signup()">Créer son compte</button>
+    <button type="submit" v-on:click="signup()">Créer son compte</button>
   </div>
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "Signup",
   data() {
     return {
-      input: {
+      user: {
         username: "",
         password: "",
         email: "",
       },
     };
   },
-  methods: {},
+  methods: {
+    signup() {
+      axios
+        .post("http://localhost:3000/api/auth/signup", this.user,
+        {
+          headers: {
+                "Content-type": "application/json",
+                 }
+        })
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          alert(error);
+        });
+    },
+  },
 };
 </script>
 
@@ -68,7 +91,7 @@ export default {
       rgba(255, 23, 68, 1) 35%,
       rgba(183, 28, 28, 1) 100%
     );
-    }
+  }
   input {
     width: 300px;
     padding: 10px;
