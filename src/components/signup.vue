@@ -53,6 +53,14 @@ export default {
         })
         .then((response) => {
           console.log(response);
+          let userInfo = {
+            username: response.data.username,
+            email: response.data.userEmail,
+            userId: response.data.userId,
+          };
+          let userInfo_json = JSON.stringify(userInfo);
+          sessionStorage.setItem("userConnected", userInfo_json);
+          window.location.href = "http://localhost:8080/#/actu";
         })
         .catch((error) => {
           alert(error);

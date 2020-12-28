@@ -1,5 +1,5 @@
 <template>
-  <div class="profil">
+  <div v-if="userConnected" class="profil">
     <Header />
     <div class="ctn">
       <img
@@ -8,11 +8,18 @@
         alt="Photo de profil"
       />
       <ul class="ctn__detail">
-        <li class="ctn__detail__username"><h1 >{{ user.username }}</h1></li>
-        <li class="ctn__detail__email">{{ user.email }}</li>
+        <li class="ctn__detail__username">
+          <h1>{{ $store.state.user }}</h1>
+        </li>
+        <li class="ctn__detail__email">{{ $store.state.email }}</li>
         <button type="button">Supprimer son profil</button>
-      </ul>
+      </ul>      
     </div>
+  </div>
+  <div v-else>
+    <router-link to="/"
+      >Merci de vous connecter pour naviguer sur Groupomania
+    </router-link>
   </div>
 </template>
 
@@ -28,14 +35,16 @@ export default {
 
   data: () => {
     return {
+      userConnected: localStorage.getItem("userConnected"),
       user: {
-        username: "John Rambo",
-        email: "john.rambo@gmail.fr",
+        username: "",
+        email: "",
       },
     };
   },
 
-  methods: {},
+  methods: {
+  },
 
   mounted: () => {},
 };
@@ -43,7 +52,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-
 .profil {
   display: flex;
   flex-direction: column;
@@ -69,7 +77,7 @@ export default {
     width: 60%;
     height: 400px;
     padding: 20px;
-  } 
+  }
 }
 
 ul {
@@ -86,26 +94,26 @@ li {
   align-items: center;
   justify-content: center;
   -webkit-box-shadow: 0px 10px 13px -7px #000000,
-      5px 5px 15px 5px rgba(0, 0, 0, 0);
-    box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0, 0, 0, 0);
+    5px 5px 15px 5px rgba(0, 0, 0, 0);
+  box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0, 0, 0, 0);
 }
 
 button {
-    width: 150px;
-    height: 30px;
-    font-weight: bold;
-    margin-top: 120px;
-    border-radius: 15px;
-    border-style: none;
-    color: white;
-    -webkit-box-shadow: 0px 10px 13px -7px #000000,
-      5px 5px 15px 5px rgba(0, 0, 0, 0);
-    box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0, 0, 0, 0);
-    background: rgb(255, 23, 68);
-    background: linear-gradient(
-      90deg,
-      rgba(255, 23, 68, 1) 35%,
-      rgba(183, 28, 28, 1) 100%
-    );
-  }
+  width: 150px;
+  height: 30px;
+  font-weight: bold;
+  margin-top: 120px;
+  border-radius: 15px;
+  border-style: none;
+  color: white;
+  -webkit-box-shadow: 0px 10px 13px -7px #000000,
+    5px 5px 15px 5px rgba(0, 0, 0, 0);
+  box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0, 0, 0, 0);
+  background: rgb(255, 23, 68);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 23, 68, 1) 35%,
+    rgba(183, 28, 28, 1) 100%
+  );
+}
 </style>

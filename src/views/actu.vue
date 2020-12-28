@@ -1,41 +1,37 @@
 <template>
-  <div class="actu">
-      <Header /> 
+  <div v-if="userConnected" class="actu">
+    <Header />
     <h1>VOUS ETES SUR ACTU</h1>
-    <comments model="Post" id="1"></comments>
+    <div v-if="userConnected">TEST 1 - 2 TEST</div>
+    <div v-else>OUPS OUPS OUPS</div>
+  </div>
+  <div v-else>
+    <router-link to="/"
+      >Merci de vous connecter pour naviguer sur Groupomania
+    </router-link>
   </div>
 </template>
 
 <script>
-
-import Header from '@/components/header.vue'
-import Comments from '../components/posts.vue'
+import Header from "@/components/header.vue";
 
 export default {
-    name: 'Actu',
-    components: {
+  name: "Actu",
+  components: {
     Header,
-    Comments
-    },
-    props: {
-    
-    },
+  },
+  props: {},
 
-    data: () => { 
-        return {
-            
-        }
-    },
+  data: () => {
+    return {
+      userConnected: sessionStorage.getItem("userConnected"),
+    };
+  },
 
-    methods: {
+  methods: {},
 
-    },
-
-    mounted: () => {
-
-    },
-
-}
+  mounted: () => {},
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

@@ -1,31 +1,45 @@
 <template>
-  <div class="header">
+  <div v-if="userConnected" class="header">
     <img
-        class="img-header"
-        src="../images/icon-left-font-monochrome-black.png"
-        alt="Logo de Groupomania"
-      />
+      class="img-header"
+      src="../images/icon-left-font-monochrome-black.png"
+      alt="Logo de Groupomania"
+    />
     <div id="nav">
-      <router-link to="/">Connexion</router-link> |
       <router-link to="/actu">Actualités</router-link> |
-      <router-link to="/profil"><i class="far fa-user-circle"></i> Profil de {{ user.username }} </router-link>
+      <router-link to="/profil"
+        ><i class="far fa-user-circle"></i> Profil de {{ $store.state.user }}
+      </router-link>
+      |
+      <a href="http://localhost:8080/#/" v-on:click="logout()"
+        ><i class="fas fa-sign-out-alt"></i
+      ></a>
     </div>
   </div>
 </template>
 
 <script>
-
 export default {
   name: "Header",
   props: {},
 
   data: () => {
-    return {};
+    return {
+      userConnected: localStorage.getItem("userConnected"),
+    };
   },
 
-  methods: {},
+  methods: {
+    logout() {
+      window.location.href = "http://localhost:8080/#/actu";
+      localStorage.removeItem("userConnected");
+      localStorage.removeItem("userInfo");
+      this.$store.commit("CLEAR_USER");
+    },
+  },
 
-  mounted: () => {},
+  mounted: () => {
+  },
 };
 </script>
 
@@ -50,6 +64,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+
   a {
     font-weight: bold;
     color: #2c3e50;
@@ -61,4 +76,8 @@ export default {
   }
 }
 
+.logout {
+  margin-left: 50px;
+  font-size: 30px;
+}
 </style>
