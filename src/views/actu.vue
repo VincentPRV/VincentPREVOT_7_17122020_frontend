@@ -2,8 +2,9 @@
   <div v-if="userConnected" class="actu">
     <Header />
     <h1>VOUS ETES SUR ACTU</h1>
-    <div v-if="userConnected">TEST 1 - 2 TEST</div>
-    <div v-else>OUPS OUPS OUPS</div>
+    <div v-if="userConnected">
+      <Comments />
+    </div>
   </div>
   <div v-else>
     <router-link to="/"
@@ -14,17 +15,20 @@
 
 <script>
 import Header from "@/components/header.vue";
+import Comments from "@/components/comments.vue";
+
 
 export default {
   name: "Actu",
   components: {
     Header,
+    Comments
   },
   props: {},
 
   data: () => {
     return {
-      userConnected: sessionStorage.getItem("userConnected"),
+      userConnected: sessionStorage.getItem("userInfo"),
     };
   },
 

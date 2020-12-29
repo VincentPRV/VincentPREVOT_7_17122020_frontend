@@ -7,6 +7,7 @@
     />
     <div id="nav">
       <router-link to="/actu">Actualités</router-link> |
+        <router-link to="/newPost">Créer un post</router-link> |
       <router-link to="/profil"
         ><i class="far fa-user-circle"></i> Profil de {{ $store.state.user }}
       </router-link>
@@ -25,15 +26,15 @@ export default {
 
   data: () => {
     return {
-      userConnected: localStorage.getItem("userConnected"),
+      userConnected: sessionStorage.getItem("userInfo"),
     };
   },
 
   methods: {
     logout() {
-      window.location.href = "http://localhost:8080/#/actu";
-      localStorage.removeItem("userConnected");
-      localStorage.removeItem("userInfo");
+      window.location.href = "http://localhost:8080";
+      sessionStorage.removeItem("userConnected");
+      sessionStorage.removeItem("userInfo");
       this.$store.commit("CLEAR_USER");
     },
   },

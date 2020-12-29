@@ -1,21 +1,22 @@
 <template>
-  <div v-if="userConnected" class="profil">
+  <div v-if="userConnected" class="newPost">
     <Header />
     <div class="ctn">
-      <img
-        class="ctn__image"
-        src="../images/icon-above-font.png"
-        alt="Photo de profil"
-      />
-      <ul class="ctn__detail">
-        <li class="ctn__detail__username">
-          <h1>{{ $store.state.user }}</h1>
-        </li>
-        <li class="ctn__detail__email">{{ $store.state.email }}</li>
-        <button type="button" v-on:click="deleteUser()">
-          Supprimer son profil
-        </button>
-      </ul>
+      <form @submit="creatPost">
+        <input
+          type="text"
+          name="title"
+          v-model="newPost.title"
+          placeholder="titre"
+        />
+        <input
+          type="text"
+          name="text"
+          v-model="newPost.text"
+          placeholder="text"
+        />
+        <input type="submit" value="Créer" />
+      </form>
     </div>
   </div>
   <div v-else>
@@ -39,34 +40,32 @@ export default {
   data: () => {
     return {
       userConnected: sessionStorage.getItem("userInfo"),
-      
-      user: {
-        username: "",
-        email: "",
-        id: "",
+
+      newPost: {
+        title: "",
+        text: "",
+        UserId: "",
       },
     };
   },
 
   methods: {
-    deleteUser() {
+    creatPost(e) {
+      e.preventDefault();
+      this.newPost.UserId = JSON.parse(this.userConnected).UserId;
       axios
-        .delete("http://localhost:3000/api/user/" + this.user.id, {
+        .post("http://localhost:3000/api/post/", this.newPost, {
           headers: {
             "Content-type": "application/json",
           },
         })
-        .then((res) => res.json());
+        .then((res) => {
+            console.log(res)
+        });
     },
   },
 
-  mounted: () => {
-    let userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
-    this.user.username = userInfo.username;
-    this.user.email = userInfo.email;
-    this.user.id = userInfo.id;
-    console.log(userInfo);
-  },
+  mounted: () => {},
 };
 </script>
 

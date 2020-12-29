@@ -11,14 +11,16 @@ export default new Vuex.Store({
   },
   mutations: {
     CREATE_USER(state) {
-      let userInfo = JSON.parse(localStorage.getItem("userInfo"));
+      let userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
       state.user = userInfo.username;
       state.email = userInfo.email;
+      state.id = userInfo.id
     },
 
     CLEAR_USER(state) {
       state.user = '';
       state.email = '';
+      state.id = '';
     }
   },
   actions: {

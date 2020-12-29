@@ -38,16 +38,10 @@ export default {
           },
         })
         .then((response) => {
-          let userInfo = {
-            username: response.data.username,
-            email: response.data.userEmail,
-            userId: response.data.userId,
-          };
-         let userInfo_json = JSON.stringify(userInfo);
-          localStorage.setItem("userConnected", "yes");
-          localStorage.setItem("userInfo", userInfo_json);
+          let userInfo_json = JSON.stringify(response.data);
+
+          sessionStorage.setItem("userInfo", userInfo_json);
           window.location.href = "http://localhost:8080/#/actu";
-          this.$store.commit('CREATE_USER')
         })
         .catch((error) => {
           alert(error);
