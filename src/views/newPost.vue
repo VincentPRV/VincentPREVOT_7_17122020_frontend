@@ -8,14 +8,16 @@
           name="title"
           v-model="newPost.title"
           placeholder="titre"
+          class="ctn__title"
         />
-        <input
+        <textarea
           type="text"
           name="text"
           v-model="newPost.text"
-          placeholder="text"
+          placeholder="texte"
+          class="ctn__text"
         />
-        <input type="submit" value="Créer" />
+        <input type="submit" value="Créer" class="ctn__btn" />
       </form>
     </div>
   </div>
@@ -31,7 +33,7 @@ import Header from "@/components/header.vue";
 import axios from "axios";
 
 export default {
-  name: "Profil",
+  name: "newPost",
   components: {
     Header,
   },
@@ -45,6 +47,7 @@ export default {
         title: "",
         text: "",
         UserId: "",
+        username: "",
       },
     };
   },
@@ -53,6 +56,8 @@ export default {
     creatPost(e) {
       e.preventDefault();
       this.newPost.UserId = JSON.parse(this.userConnected).UserId;
+      this.newPost.username = JSON.parse(this.userConnected).username;
+      console.log(this.userConnected)
       axios
         .post("http://localhost:3000/api/post/", this.newPost, {
           headers: {
@@ -60,7 +65,9 @@ export default {
           },
         })
         .then((res) => {
-            console.log(res)
+          console.log(res);
+          alert("Post créé avec succès !")
+           window.location.href = "http://localhost:8080/#/actu";
         });
     },
   },
@@ -71,68 +78,47 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-.profil {
-  display: flex;
-  flex-direction: column;
-  margin: auto;
-  align-items: center;
-}
-
 .ctn {
+  width: 500px;
+  background-color: #F5F5F5;
+  margin: auto;
+  margin-top: 50px;
+  height: 400px;
+  word-wrap: break-word;
+  border: black 1px solid;
+  border-radius: 20px;
   display: flex;
-  padding: 80px;
-  width: 70%;
-  &__image {
-    width: 40%;
-  }
-  &__detail {
-    background-image: url("../images/cyber-3400789_640.jpg");
-    border-radius: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: auto;
-    width: 60%;
-    height: 400px;
-    padding: 20px;
-  }
-}
-
-ul {
-  list-style-type: none;
-}
-
-li {
-  height: 70px;
-  width: 60%;
-  margin: 10px 0px 10px 0px;
-  background-color: white;
-  border-radius: 50px;
-  display: flex;
-  align-items: center;
   justify-content: center;
-  -webkit-box-shadow: 0px 10px 13px -7px #000000,
-    5px 5px 15px 5px rgba(0, 0, 0, 0);
-  box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0, 0, 0, 0);
-}
+  box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.06);
 
-button {
-  width: 150px;
-  height: 30px;
-  font-weight: bold;
-  margin-top: 120px;
-  border-radius: 15px;
-  border-style: none;
-  color: white;
-  -webkit-box-shadow: 0px 10px 13px -7px #000000,
-    5px 5px 15px 5px rgba(0, 0, 0, 0);
-  box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0, 0, 0, 0);
-  background: rgb(255, 23, 68);
-  background: linear-gradient(
-    90deg,
-    rgba(255, 23, 68, 1) 35%,
-    rgba(183, 28, 28, 1) 100%
-  );
+  &__text {
+    width: 80%;
+    margin: 20px 0px 20px 0px;
+    height: 60%;
+    resize: none;
+    box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.06);
+  }
+  &__title {
+    width: 80%;
+    box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.06);
+    margin-top: 20px;
+  }
+  &__btn {
+    width: 150px;
+    height: 30px;
+    font-weight: bold;
+    border-radius: 15px;
+    border-style: none;
+    color: white;
+    -webkit-box-shadow: 0px 10px 13px -7px #000000,
+      5px 5px 15px 5px rgba(0, 0, 0, 0);
+    box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0, 0, 0, 0);
+    background: rgb(255, 23, 68);
+    background: linear-gradient(
+      90deg,
+      rgba(255, 23, 68, 1) 35%,
+      rgba(183, 28, 28, 1) 100%
+    );
+  }
 }
 </style>

@@ -7,9 +7,9 @@
     />
     <div id="nav">
       <router-link to="/actu">Actualités</router-link> |
-        <router-link to="/newPost">Créer un post</router-link> |
+      <router-link to="/newPost">Créer un post</router-link> |
       <router-link to="/profil"
-        ><i class="far fa-user-circle"></i> Profil de {{ $store.state.user }}
+        ><i class="far fa-user-circle"></i> Profil
       </router-link>
       |
       <a href="http://localhost:8080/#/" v-on:click="logout()"
@@ -39,8 +39,7 @@ export default {
     },
   },
 
-  mounted: () => {
-  },
+  mounted: () => {},
 };
 </script>
 

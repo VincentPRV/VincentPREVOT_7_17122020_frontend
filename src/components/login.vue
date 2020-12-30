@@ -39,7 +39,6 @@ export default {
         })
         .then((response) => {
           let userInfo_json = JSON.stringify(response.data);
-
           sessionStorage.setItem("userInfo", userInfo_json);
           window.location.href = "http://localhost:8080/#/actu";
         })

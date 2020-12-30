@@ -1,7 +1,7 @@
 <template>
   <div v-if="userConnected" class="actu">
     <Header />
-    <h1>VOUS ETES SUR ACTU</h1>
+    <h1>fil d'actualité</h1>
     <div v-if="userConnected">
       <Comments />
     </div>
@@ -22,7 +22,7 @@ export default {
   name: "Actu",
   components: {
     Header,
-    Comments
+    Comments,
   },
   props: {},
 
@@ -34,7 +34,9 @@ export default {
 
   methods: {},
 
-  mounted: () => {},
+  mounted: () => {
+    
+  },
 };
 </script>
 

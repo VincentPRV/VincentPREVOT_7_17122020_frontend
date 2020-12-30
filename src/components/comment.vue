@@ -1,12 +1,12 @@
 <template>
   <div class="comment">
-    <div class="avatar"><img src="../images/avatar.png" alt="" /></div>
     <div class="content">
-      <div class="author">{{ comments.username }}</div>
+      <div class="author">{{ post.UserId }}</div>
       <div class="metadata">
-        <span class="date">{{ comments.created_at }}</span>
+        <span class="date">{{ post.createdAt }}</span>
       </div>
-      <div class="text">{{ comments.content }}</div>
+      <div class="text">{{ post.title }}</div>
+      <div class="text">{{ post.text }}</div>
     </div>
     <div class="actions"><a href="#">Répondre></a></div>
   </div>
