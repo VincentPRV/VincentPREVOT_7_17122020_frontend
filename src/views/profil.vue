@@ -9,9 +9,9 @@
       />
       <ul class="ctn__detail">
         <li class="ctn__detail__username">
-          <h1>{{ $store.state.user }}</h1>
+          <h1>username</h1>
         </li>
-        <li class="ctn__detail__email">{{ $store.state.email }}</li>
+        <li class="ctn__detail__email">email</li>
         <button type="button" v-on:click="deleteUser()">
           Supprimer son profil
         </button>
@@ -38,20 +38,16 @@ export default {
 
   data: () => {
     return {
-      userConnected: sessionStorage.getItem("userInfo"),
-      
-      user: {
-        username: "",
-        email: "",
-        id: "",
-      },
+      userConnected: JSON.parse(sessionStorage.getItem("userInfo")),
+      user: {},
     };
   },
 
   methods: {
     deleteUser() {
+      let id = JSON.parse(sessionStorage.getItem("userInfo")).UserId;
       axios
-        .delete("http://localhost:3000/api/user/" + this.user.id, {
+        .destroy("http://localhost:3000/api/user/" + id, {
           headers: {
             "Content-type": "application/json",
           },
@@ -60,13 +56,7 @@ export default {
     },
   },
 
-  mounted: () => {
-    let userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
-    this.user.username = userInfo.username;
-    this.user.email = userInfo.email;
-    this.user.id = userInfo.id;
-    console.log(userInfo);
-  },
+  mounted: () => {},
 };
 </script>
 

@@ -5,22 +5,11 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    user: '',
-    email: '',
-    online: '',
+    PostId:'',
   },
   mutations: {
-    CREATE_USER(state) {
-      let userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
-      state.user = userInfo.username;
-      state.email = userInfo.email;
-      state.id = userInfo.id
-    },
-
-    CLEAR_USER(state) {
-      state.user = '';
-      state.email = '';
-      state.id = '';
+    addPostId (state, payload) {
+      state.PostId += payload.value
     }
   },
   actions: {

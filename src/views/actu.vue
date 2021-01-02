@@ -3,7 +3,7 @@
     <Header />
     <h1>fil d'actualité</h1>
     <div v-if="userConnected">
-      <Comments />
+      <Posts />
     </div>
   </div>
   <div v-else>
@@ -15,14 +15,14 @@
 
 <script>
 import Header from "@/components/header.vue";
-import Comments from "@/components/comments.vue";
+import Posts from "@/components/posts.vue";
 
 
 export default {
   name: "Actu",
   components: {
     Header,
-    Comments,
+    Posts,
   },
   props: {},
 

@@ -10,17 +10,23 @@
         <button
           type="button"
           class="post__button__reply"
-          v-if="userConnected.UserId === item.UserId"
+          
+          @click="(reply.PostId = item.id), replyComment()"
         >
           <i class="far fa-comment-dots"></i> Répondre
         </button>
         <button
           type="button"
           class="post__button__delete"
-          v-on:click="deletePost()"
+          v-if="userConnected.UserId === item.UserId"
+          @:click="deletePost()"
         >
           <i class="fas fa-ban"></i> Supprimer
         </button>
+      </div>
+      <div class="comments" @click="reply.PostId = item.id, showAllComments()">voir les commentaires</div>
+      <div class="reply" v-if="reply.PostId === item.id">
+        <NewComment />
       </div>
     </div>
   </div>
@@ -28,23 +34,32 @@
 
 <script>
 import axios from "axios";
-
+import NewComment from "@/components/newComment.vue";
 export default {
-  name: "Comments",
-  components: {},
+  name: "Posts",
+  components: {
+    NewComment,
+  },
   props: {},
 
-  data: () => {
+  data() {
     return {
       posts: [],
-
+      comments: [],
+      userReply: true,
       userConnected: JSON.parse(sessionStorage.getItem("userInfo")),
+      reply: {
+        PostId: "",
+      },
     };
   },
 
   methods: {
-  deletePost() {
-    axios
+    replyComment() {
+      sessionStorage.setItem('PostId', this.reply.PostId)
+    },
+    deletePost() {
+      axios
         .delete("http://localhost:3000/api/post/" + this.posts.id, {
           headers: {
             "Content-type": "application/json",
@@ -55,6 +70,21 @@ export default {
           alert("Post effacé avec succès !");
         });
     },
+
+    showAllComments() {
+      let id = this.reply.PostId;
+      console.log(id, "coucou")
+      axios
+      .get("http://localhost:3000/api/comment/" + id)
+      .then((res) => {
+        console.log(res.data);
+        this.comments = res.data;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  
+    }
   },
 
   mounted: function () {
