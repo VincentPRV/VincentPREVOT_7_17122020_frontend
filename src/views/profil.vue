@@ -16,14 +16,31 @@
         <p class="ctn__header__email">email</p>
       </div>
       <div class="ctn__footer">
-        <button v-if="wantModify == false"
+        <button
+          v-if="wantModify == false"
           type="button"
           v-on:click="wantModify = true"
           class="ctn__footer__btn"
         >
           Modifier son profil
         </button>
-        <p v-if="wantModify == false" class="ctn__footer__delete">Supprimer son profil</p>
+        <div class="whatToShow">
+          <button v-on:click="whatToShow = 1">Posts</button> |
+          <button v-on:click="whatToShow = 2">commentaires</button>
+        </div>
+        <div v-if="whatToShow === 1" class="lastPost">
+          <UserPost />
+        </div>
+        <div v-if="whatToShow === 2" class="lastPost">
+          <UserComment />
+        </div>
+        <p
+          v-if="wantModify == false"
+          class="ctn__footer__delete"
+          @click="deleteUser()"
+        >
+          Supprimer son profil
+        </p>
         <div v-if="wantModify === true" class="ctn__footer__form">
           <input
             type="text"
@@ -65,37 +82,50 @@
 
 <script>
 import Header from "@/components/header.vue";
-//import axios from "axios";
+import UserPost from "@/components/userPost.vue";
+import UserComment from "@/components/userComment.vue";
+import axios from "axios";
 
 export default {
   name: "Profil",
   components: {
     Header,
+    UserPost,
+     UserComment,
   },
   props: {},
 
   data: () => {
     return {
       userConnected: JSON.parse(sessionStorage.getItem("userInfo")),
-      user: {},
+      user: {
+        username: "",
+        password: "",
+        email: "",
+      },
       wantModify: false,
+      whatToShow: 1,
     };
   },
 
   methods: {
-    /*deleteUser() {
+    deleteUser() {
       let id = JSON.parse(sessionStorage.getItem("userInfo")).UserId;
-      axios
-        .destroy("http://localhost:3000/api/user/" + id, {
-          headers: {
-            "Content-type": "application/json",
-          },
-        })
-        .then((res) => res.json());
-    },*/
+
+      if (confirm("Êtes-vous sûr de vouloir supprimer ce compte ?"))
+        axios
+          .delete("http://localhost:3000/api/user/" + id, {
+            headers: {
+              "Content-type": "application/json",
+            },
+          })
+          .then((res) => res.data);
+    },
   },
 
-  mounted: () => {},
+  mounted: function () {
+
+  },
 };
 </script>
 
@@ -164,6 +194,7 @@ export default {
       box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0, 0, 0, 0);
       position: relative;
       top: -20px;
+      font-weight: bold;
     }
     &__delete {
       margin-top: 70px;
@@ -177,24 +208,6 @@ export default {
       margin: auto;
       padding: 20px;
     }
-    &__btn {
-      width: 150px;
-      height: 30px;
-      font-weight: bold;
-      margin-top: 50px;
-      border-radius: 15px;
-      border-style: none;
-      color: white;
-      -webkit-box-shadow: 0px 10px 13px -7px #000000,
-        5px 5px 15px 5px rgba(0, 0, 0, 0);
-      box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0, 0, 0, 0);
-      background: rgb(255, 23, 68);
-      background: linear-gradient(
-        90deg,
-        rgba(255, 23, 68, 1) 35%,
-        rgba(183, 28, 28, 1) 100%
-      );
-    }
   }
 }
 input {
@@ -202,4 +215,25 @@ input {
   padding: 10px;
   margin: 10px;
 }
+
+.whatToShow {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  button {
+    font-weight: bold;
+    color: #2c3e50;
+    border: none;
+    outline:none;
+    background-color: white;
+    padding: 10px;
+    &:focus {
+      /*color: #42b983;*/
+      color: #ff1744;
+    }
+  }
+}
+
 </style>

@@ -25,7 +25,7 @@
       placeholder="Mot de passe"
       pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]{8,})$"
     />
-    <button type="submit" v-on:click="signup()">Créer son compte</button>
+    <button type="submit" @:click="signup()">Créer son compte</button>
   </div>
 </template>
 
@@ -45,15 +45,16 @@ export default {
   methods: {
     signup() {
       axios
-        .post("http://localhost:3000/api/auth/signup", this.user,
-        {
+        .post("http://localhost:3000/api/auth/signup", this.user, {
           headers: {
-                "Content-type": "application/json",
-                 }
+            "Content-type": "application/json",
+          },
         })
         .then((response) => {
           console.log(response);
-          alert('Utilisateur créé ! Vous pouvez maintenant vous connecter avec succès.')
+          alert(
+            "Utilisateur créé ! Vous pouvez maintenant vous connecter avec succès."
+          );
           window.location.href = "http://localhost:8080/#";
         })
         .catch((error) => {

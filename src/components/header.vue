@@ -70,7 +70,6 @@ export default {
     color: #2c3e50;
     padding: 30px;
     &.router-link-exact-active {
-      /*color: #42b983;*/
       color: #ff1744;
     }
   }
