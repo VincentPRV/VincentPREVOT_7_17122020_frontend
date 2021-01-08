@@ -33,9 +33,7 @@ export default {
   methods: {
     logout() {
       window.location.href = "http://localhost:8080";
-      sessionStorage.removeItem("userConnected");
       sessionStorage.removeItem("userInfo");
-      this.$store.commit("CLEAR_USER");
     },
   },
 

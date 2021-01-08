@@ -8,6 +8,7 @@
       v-model="user.username"
       placeholder="Nom d'utilisateur"
     />
+    <p v-if="errors.username">Nom d'utilisateur non valide</p>
     <input
       type="email"
       name="email"
@@ -17,6 +18,7 @@
       placeholder="e-mail"
       pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]{2,15}$"
     />
+    <p v-if="errors.email">Email non valide</p>
     <input
       type="password"
       name="password"
@@ -25,7 +27,10 @@
       placeholder="Mot de passe"
       pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]{8,})$"
     />
-    <button type="submit" @:click="signup()">Créer son compte</button>
+     <p v-if="errors.password">
+            Mot de passe non valide - 6 caractères minimun
+          </p>
+    <button type="submit" @click="signup">Créer son compte</button>
   </div>
 </template>
 
@@ -40,26 +45,57 @@ export default {
         password: "",
         email: "",
       },
+      errors: {
+        username: false,
+        password: false,
+        email: false,
+      },
     };
   },
   methods: {
     signup() {
-      axios
-        .post("http://localhost:3000/api/auth/signup", this.user, {
-          headers: {
-            "Content-type": "application/json",
-          },
-        })
-        .then((response) => {
-          console.log(response);
-          alert(
-            "Utilisateur créé ! Vous pouvez maintenant vous connecter avec succès."
-          );
-          window.location.href = "http://localhost:8080/#";
-        })
-        .catch((error) => {
-          alert(error);
-        });
+      if (this.verifFields()) {
+        axios
+          .post("http://localhost:3000/api/auth/signup", this.user, {
+            headers: {
+              "Content-type": "application/json",
+            },
+          })
+          .then((response) => {
+            console.log(response);
+            alert(
+              "Utilisateur créé ! Vous pouvez maintenant vous connecter avec succès."
+            );
+            this.$router.go("/");
+          })
+          .catch((error) => {
+            alert(error);
+          });
+      }
+    },
+
+    verifFields() {
+      this.errors.username = false;
+      this.errors.email = false;
+      this.errors.password = false;
+      let errors = 0;
+      if (this.user.username.trim().length < 1) {
+        this.errors.username = true;
+        errors++;
+      }
+      if (this.user.email.trim().length < 1) {
+        this.errors.email = true;
+        errors++;
+      }
+      if (this.user.password.trim().length < 6) {
+        this.errors.password = true;
+        errors++;
+      }
+      if (errors > 0) {
+        return false;
+      } else {
+        return true;
+      }
     },
   },
 };
@@ -83,6 +119,7 @@ export default {
     font-weight: bold;
     margin: 10px;
     border-radius: 15px;
+    outline: none;
     border-style: none;
     color: white;
     -webkit-box-shadow: 0px 10px 13px -7px #000000,

@@ -64,7 +64,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-
 .ctn {
   height: 100%;
   display: flex;
@@ -83,6 +82,7 @@ export default {
     height: 30px;
     font-weight: bold;
     border-radius: 15px;
+    outline: none;
     border-style: none;
     color: white;
     -webkit-box-shadow: 0px 10px 13px -7px #000000,

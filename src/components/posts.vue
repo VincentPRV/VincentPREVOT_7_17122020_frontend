@@ -6,7 +6,9 @@
         <p class="post__info__username">
           Poster par {{ item.username }} le {{ item.createdAt }}
         </p>
-        <i class="fas fa-exclamation-circle"></i>
+        <div @click="(reportThisPost = item.id), postReport()">
+          <i class="fas fa-exclamation-circle"></i>
+        </div>
       </div>
       <p class="post__text">{{ item.text }}</p>
       <div class="post__button">
@@ -20,8 +22,8 @@
         <button
           type="button"
           class="post__button__delete"
-          v-if="userConnected.UserId === item.UserId"
-          @:click="deletePost()"
+          v-if="userConnected.UserId === item.UserId || userConnected.isAdmin === true"
+          @click="(PostId = item.id), deletePost()"
         >
           <i class="fas fa-ban"></i> Supprimer
         </button>
@@ -44,14 +46,17 @@
           >
             <p class="comment__text">{{ comment.text }}</p>
             <div class="comment__info">
+              <div class="comment__info__btn">
+                <button @click="(comId = comment.id), deleteComment()" v-if="userConnected.UserId === comment.UserId || userConnected.isAdmin === true">
+                  <i class="far fa-trash-alt"></i>
+                </button>
+                <button @click="(comId = comment.id), commentReport()" v-if="userConnected.UserId !== comment.UserId">
+                  <i class="fas fa-exclamation-circle"></i>
+                </button>
+              </div>
               <p class="comment__info__username">
                 Poster par {{ item.username }} le {{ item.createdAt }}
               </p>
-              <div class="comment__info__icons">
-                <i class="fas fa-reply"></i>
-                <i class="fas fa-ban"></i>
-                <i class="fas fa-exclamation-circle"></i>
-              </div>
             </div>
           </div>
         </div>
@@ -74,12 +79,15 @@ export default {
     return {
       showComments: {},
       posts: [],
+      reportThisPost: "",
       comments: [],
       userReply: true,
       userConnected: JSON.parse(sessionStorage.getItem("userInfo")),
       reply: {
         PostId: "",
       },
+      comId: "",
+      PostId: "",
     };
   },
 
@@ -87,27 +95,94 @@ export default {
     replyComment() {
       sessionStorage.setItem("PostId", this.reply.PostId);
     },
+
+    deleteComment() {
+      let commentId = this.comId;
+      if (confirm("Êtes-vous sûr de vouloir supprimer ce post ?"))
+        axios
+          .delete("http://localhost:3000/api/comment/" + commentId, {
+            headers: {
+              "Content-type": "application/json",
+            },
+          })
+          .then((res) => {
+            console.log(res.data);
+            alert("votre commentaire a été effacé avec succès");
+            this.$router.go("/actu");
+          });
+    },
+
     deletePost() {
+      let PostId = this.PostId;
+
+      if (confirm("Êtes-vous sûr de vouloir supprimer ce commentaire ?"))
+        axios
+          .delete("http://localhost:3000/api/post/" + PostId, {
+            headers: {
+              "Content-type": "application/json",
+            },
+          })
+          .then((res) => {
+            console.log(res.data);
+            alert("votre post a été effacé avec succès");
+            this.$router.go("/actu");
+          });
+    },
+
+    showAllComments() {
+      let id = this.showComments;
+
       axios
-        .delete("http://localhost:3000/api/post/" + this.posts.id, {
+        .get("http://localhost:3000/api/comment/readAll/" + id)
+        .then((res) => {
+          this.comments = res.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+
+    postReport() {
+      console.log(this.reportThisPost);
+      let postData = {
+        isSignaled: 1,
+      };
+      axios
+        .put(
+          "http://localhost:3000/api/post/" + this.reportThisPost,
+          postData,
+          {
+            headers: {
+              "Content-type": "application/json",
+            },
+          }
+        )
+        .then((res) => {
+          console.log(res.data);
+          alert(
+            "Merci pour votre signalement ! Notre équipe va vérifier ce post dès que possible."
+          );
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+
+    commentReport() {
+      let commentData = {
+        isSignaled: 1,
+      };
+      axios
+        .put("http://localhost:3000/api/comment/" + this.comId, commentData, {
           headers: {
             "Content-type": "application/json",
           },
         })
         .then((res) => {
-          console.log(res);
-          alert("Post effacé avec succès !");
-        });
-    },
-
-    showAllComments() {
-      let id = this.showComments;
-      console.log(id);
-      axios
-        .get("http://localhost:3000/api/comment/" + id)
-        .then((res) => {
-          this.comments = res.data;
-          console.log(this.comments);
+          console.log(res.data);
+          alert(
+            "Merci pour votre signalement ! Notre équipe va vérifier ce commentaire dès que possible."
+          );
         })
         .catch((error) => {
           console.log(error);
@@ -185,6 +260,7 @@ export default {
       border: none;
       height: 50px;
       width: 130px;
+      outline: none;
       margin: 10px;
       font-size: 16px;
       border-radius: 50px;
@@ -196,6 +272,7 @@ export default {
       border: none;
       height: 50px;
       width: 130px;
+      outline: none;
       margin: 10px;
       font-size: 16px;
       border-radius: 50px;
@@ -213,6 +290,7 @@ export default {
   }
   .btn_comment {
     border: none;
+    margin-top: 25px;
     background-color: #f5f5f5;
     font-style: italic;
   }
@@ -233,10 +311,22 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
-      flex-direction: row-reverse;
-      // border: olive 1px solid;
       width: 100%;
       margin-top: -15px;
+      &__btn {
+        width: 200px;
+        button {
+          border: none;
+          outline: none;
+          background-color: #f5f5f5;
+          font-size: 20px;
+          padding: 10px;
+          width: 60px;
+          &:active {
+            color: red;
+          }
+        }
+      }
     }
     &__info__username {
       //margin-top: -10px;
@@ -244,12 +334,6 @@ export default {
       font-style: italic;
       text-align: right;
       width: 55%;
-    }
-    &__info__icons {
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      width: 15%;
     }
   }
 }

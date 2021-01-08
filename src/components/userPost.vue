@@ -1,44 +1,34 @@
 <template>
-<div class="lastPost">
-          <div
-            v-for="item in posts"
-            v-bind:key="item.text"
-            class="lastPost__list"
-          >
-            <p class="lastPost__list__text">
-              {{ item.text }}
-            </p>
-          </div>
-        </div>
+  <div class="lastPost">
+    <div v-for="item in posts" v-bind:key="item.text" class="lastPost__list">
+      <p class="lastPost__list__text">
+        {{ item.text }}
+      </p>
+    </div>
+  </div>
 </template>
 
 <script>
-
 import axios from "axios";
 
 export default {
   name: "UserPost",
-  components: {
-   
-  },
+  components: {},
   props: {},
 
   data: () => {
     return {
-      posts: [], 
+      posts: [],
     };
   },
 
-  methods: {
-   
-  },
+  methods: {},
 
   mounted: function () {
     let username = JSON.parse(sessionStorage.getItem("userInfo")).username;
     axios
-      .get("http://localhost:3000/api/post/" + username)
+      .get("http://localhost:3000/api/post/userPosts/" + username)
       .then((res) => {
-        console.log(res.data);
         this.posts = res.data;
       })
       .catch((error) => {

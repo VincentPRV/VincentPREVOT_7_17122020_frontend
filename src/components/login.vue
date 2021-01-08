@@ -71,6 +71,7 @@ export default {
     width: 150px;
     height: 30px;
     font-weight: bold;
+    outline: none;
     margin: 10px;
     border-radius: 15px;
     border-style: none;

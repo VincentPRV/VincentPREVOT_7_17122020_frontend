@@ -67,7 +67,7 @@ export default {
         .then((res) => {
           console.log(res);
           alert("Post créé avec succès !")
-           window.location.href = "http://localhost:8080/#/actu";
+          window.location.href = "http://localhost:8080/#/actu";
         });
     },
   },

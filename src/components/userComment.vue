@@ -4,6 +4,7 @@
       <p class="lastComment__list__text">
         {{ item.text }}
       </p>
+      <p v-if="Comments.length < 0">coucou</p>
     </div>
   </div>
 </template>
@@ -26,11 +27,9 @@ export default {
 
   mounted: function () {
     let UserId = JSON.parse(sessionStorage.getItem("userInfo")).UserId;
-    console.log(UserId)
     axios
-      .get("http://localhost:3000/api/comment/" + UserId)
+      .get("http://localhost:3000/api/comment/" + UserId +"/usercomments")
       .then((res) => {
-        console.log(res.data);
         this.Comments = res.data;
       })
       .catch((error) => {
