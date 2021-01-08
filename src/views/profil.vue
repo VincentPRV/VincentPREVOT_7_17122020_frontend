@@ -11,9 +11,9 @@
           />
         </div>
         <h1 class="ctn__header__username">
-          {{ userConnected.username }}
+          {{ user.username }}
         </h1>
-        <p class="ctn__header__email">email</p>
+        <p class="ctn__header__email">{{ user.email }}</p>
       </div>
       <div class="ctn__footer">
         <button
@@ -25,7 +25,7 @@
           Modifier son profil
         </button>
         <div class="whatToShow">
-          <button v-if="userConnected.isAdmin === true" @click="whatToShow = 3">
+           | <button  @click="whatToShow = 3">
             Modération
           </button>
           | <button @click="whatToShow = 1">Posts</button> |
@@ -38,7 +38,10 @@
           <UserComment />
         </div>
         <div v-if="whatToShow === 3" class="lastPost">
-          <IsSignaled />
+          <div v-if="userConnected.isAdmin === true">
+            <IsSignaled />
+          </div>
+          <p v-else>Statut de modérateur requis.</p>
         </div>
         <p
           v-if="whatToShow !== 4"
@@ -71,7 +74,7 @@
             name="password"
             required="required"
             v-model="user.password"
-            placeholder="Nouveau mot de passe"
+            placeholder="Nouveau mot de passe - non obligatoire"
             pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]{8,})$"
           />
           <p v-if="errors.password">
@@ -82,16 +85,14 @@
             type="submit"
             @click="updateProfil"
           >
-            Modifier son compte
+            Modifier mon compte
           </button>
         </div>
       </div>
     </div>
   </div>
-  <div v-else>
-    <router-link to="/"
-      >Merci de vous connecter pour naviguer sur Groupomania
-    </router-link>
+  <div v-else class="notConnected">
+    <NotConnected />
   </div>
 </template>
 
@@ -101,6 +102,7 @@ import IsSignaled from "@/components/isSignaled.vue";
 import UserPost from "@/components/userPost.vue";
 import UserComment from "@/components/userComment.vue";
 import axios from "axios";
+import NotConnected from "@/components/notConnected.vue";
 
 export default {
   name: "Profil",
@@ -109,12 +111,13 @@ export default {
     UserPost,
     IsSignaled,
     UserComment,
+    NotConnected,
   },
   props: {},
 
   data: () => {
     return {
-      userConnected: JSON.parse(sessionStorage.getItem("userInfo")),
+      userConnected: null,
       user: {
         username: "",
         password: "",
@@ -126,6 +129,7 @@ export default {
         password: false,
         email: false,
       },
+      currentPassword: null,
     };
   },
 
@@ -146,6 +150,7 @@ export default {
         window.location.href = "http://localhost:8080";
       }
     },
+
     verifFields() {
       this.errors.username = false;
       this.errors.email = false;
@@ -159,7 +164,10 @@ export default {
         this.errors.email = true;
         errors++;
       }
-      if (this.user.password.trim().length < 6) {
+      if (
+        this.user.password.trim().length < 6 &&
+        this.user.password.trim().length > 0
+      ) {
         this.errors.password = true;
         errors++;
       }
@@ -169,10 +177,17 @@ export default {
         return true;
       }
     },
+
     updateProfil() {
       if (this.verifFields()) {
+        let modifyUser = { ...this.user };
+        if (!modifyUser.password) {
+          modifyUser.password = this.currentPassword;
+        }
+
         let storeData = JSON.parse(sessionStorage.getItem("userInfo"));
-        console.log(storeData.UserId)
+        console.log(storeData.UserId);
+        let token = this.userConnected.token;
         axios
           .put(
             "http://localhost:3000/api/auth/" + storeData.UserId,
@@ -180,24 +195,48 @@ export default {
             {
               headers: {
                 "Content-type": "application/json",
+                Authorization: "Bearer " + token,
               },
             }
           )
           .then((res) => {
             console.log(res.data);
-            storeData.username=this.user.username
-            sessionStorage.setItem("userInfo",JSON.stringify(storeData));
+            storeData.username = this.user.username;
+            sessionStorage.setItem("userInfo", JSON.stringify(storeData));
             alert("votre compte a été modifié avec succès");
+            this.$router.go("/profil");
           })
           .catch((error) => {
             alert(error);
           });
-        // window.location.href = "http://localhost:8080";
       }
+    },
+
+    getOneUser() {
+      let token = this.userConnected.token;
+      axios
+        .get("http://localhost:3000/api/auth/" + this.userConnected.UserId, {
+          headers: {
+            "Content-type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        })
+        .then((res) => {
+          this.user.email = res.data.user.email;
+          this.user.username = res.data.user.username;
+          this.currentPassword = res.data.user.password;
+          console.log(this.user);
+        })
+        .catch((error) => {
+          alert(error);
+        });
     },
   },
 
-  mounted: function () {},
+  mounted: function () {
+    this.userConnected = JSON.parse(sessionStorage.getItem("userInfo"));
+    this.getOneUser();
+  },
 };
 </script>
 
@@ -268,10 +307,17 @@ export default {
       position: relative;
       top: -20px;
       font-weight: bold;
+      &:hover {
+        cursor: pointer;
+      }
     }
     &__delete {
       margin-top: 70px;
       font-style: italic;
+      &:hover {
+        cursor: pointer;
+        text-decoration: underline;
+      }
     }
     &__form {
       display: flex;
@@ -298,6 +344,9 @@ export default {
           rgba(255, 23, 68, 1) 35%,
           rgba(183, 28, 28, 1) 100%
         );
+        &:hover {
+          cursor: pointer;
+        }
       }
     }
   }
@@ -306,6 +355,7 @@ input {
   width: 300px;
   padding: 10px;
   margin: 10px;
+  color: #757575;
 }
 
 .whatToShow {
@@ -322,7 +372,10 @@ input {
     background-color: white;
     padding: 10px;
     &:focus {
-      /*color: #42b983;*/
+      color: #ff1744;
+    }
+    &:hover {
+      cursor: pointer;
       color: #ff1744;
     }
   }

@@ -32,28 +32,30 @@ export default {
         PostId: "",
         text: "",
         UserId: "",
+        PostedBy: "",
       },
     };
   },
 
   methods: {
     creatComment() {
-      // e.preventDefault();
       this.newComment.UserId = JSON.parse(this.userConnected).UserId;
+      
       this.newComment.PostId = sessionStorage.getItem("PostId");
       sessionStorage.removeItem("PostId");
-      console.log(this.newComment);
-      let url = "http://localhost:3000/api/comment/";
+      let token = JSON.parse(this.userConnected).token;
+      console.log(token)
+     let url = "http://localhost:3000/api/comment/";
       axios
         .post(url, this.newComment, {
           headers: {
             "Content-type": "application/json",
+            'Authorization': 'Bearer ' + token,
           },
         })
         .then((res) => {
           console.log(res);
           alert("Commentaire créé avec succès !");
-          window.location.href = "http://localhost:8080/#/actu";
         });
     },
   },
@@ -76,6 +78,7 @@ export default {
     padding: 15px;
     resize: none;
     width: 100%;
+    outline: none;
   }
   &__btn {
     width: 150px;

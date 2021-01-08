@@ -21,27 +21,27 @@
       </form>
     </div>
   </div>
-  <div v-else>
-    <router-link to="/"
-      >Merci de vous connecter pour naviguer sur Groupomania
-    </router-link>
+  <div v-else class="notConnected">
+    <NotConnected />
   </div>
 </template>
 
 <script>
 import Header from "@/components/header.vue";
 import axios from "axios";
+import NotConnected from "@/components/notConnected.vue";
 
 export default {
   name: "newPost",
   components: {
     Header,
+    NotConnected,
   },
   props: {},
 
   data: () => {
     return {
-      userConnected: sessionStorage.getItem("userInfo"),
+      userConnected: JSON.parse(sessionStorage.getItem("userInfo")),
 
       newPost: {
         title: "",
@@ -55,13 +55,14 @@ export default {
   methods: {
     creatPost(e) {
       e.preventDefault();
-      this.newPost.UserId = JSON.parse(this.userConnected).UserId;
-      this.newPost.username = JSON.parse(this.userConnected).username;
-      console.log(this.userConnected)
+      this.newPost.UserId = this.userConnected.UserId;
+      this.newPost.username = this.userConnected.username;
+      let token = this.userConnected.token;
       axios
         .post("http://localhost:3000/api/post/", this.newPost, {
           headers: {
             "Content-type": "application/json",
+            'Authorization': 'Bearer ' + token,
           },
         })
         .then((res) => {
@@ -109,6 +110,7 @@ export default {
     font-weight: bold;
     border-radius: 15px;
     border-style: none;
+    outline: none;
     color: white;
     -webkit-box-shadow: 0px 10px 13px -7px #000000,
       5px 5px 15px 5px rgba(0, 0, 0, 0);

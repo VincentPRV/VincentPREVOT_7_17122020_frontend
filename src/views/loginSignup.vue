@@ -3,7 +3,7 @@
     <Header />
     <div v-if="userExist">
       <Login />
-      <h2 @click="userExist = !userExist">Nouveau chez Groupomania ?</h2>
+      <h2 @click="userExist = !userExist">Vous n’avez pas de compte  ? <span>Inscrivez-vous</span></h2>
     </div>
 
     <div v-else id="new">
@@ -47,6 +47,7 @@ button {
   margin: 10px;
   border-radius: 15px;
   border-style: none;
+  cursor: pointer;
   color: white;
   -webkit-box-shadow: 0px 10px 13px -7px #000000,
     5px 5px 15px 5px rgba(0, 0, 0, 0);
@@ -59,9 +60,13 @@ button {
   );
 }
 
+span {
+  color: red;
+}
 h2 {
   &:hover {
     text-decoration: underline;
+    cursor: pointer;
   }
 }
 </style>

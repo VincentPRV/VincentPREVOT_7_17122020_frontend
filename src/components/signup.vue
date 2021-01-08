@@ -27,9 +27,7 @@
       placeholder="Mot de passe"
       pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]{8,})$"
     />
-     <p v-if="errors.password">
-            Mot de passe non valide - 6 caractères minimun
-          </p>
+    <p v-if="errors.password">Mot de passe non valide - 6 caractères minimun</p>
     <button type="submit" @click="signup">Créer son compte</button>
   </div>
 </template>
@@ -64,7 +62,7 @@ export default {
           .then((response) => {
             console.log(response);
             alert(
-              "Utilisateur créé ! Vous pouvez maintenant vous connecter avec succès."
+              "Compte utilisateur créé ! Vous pouvez maintenant vous connecter avec succès."
             );
             this.$router.go("/");
           })
@@ -83,7 +81,7 @@ export default {
         this.errors.username = true;
         errors++;
       }
-      if (this.user.email.trim().length < 1) {
+      if (this.user.email.trim().length < 4) {
         this.errors.email = true;
         errors++;
       }

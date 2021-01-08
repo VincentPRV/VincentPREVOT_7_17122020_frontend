@@ -5,6 +5,7 @@
         {{ item.text }}
       </p>
     </div>
+    <p v-if="this.posts.length < 1">Vous n'avez publié aucun post.</p>
   </div>
 </template>
 
@@ -26,8 +27,14 @@ export default {
 
   mounted: function () {
     let username = JSON.parse(sessionStorage.getItem("userInfo")).username;
+    let token = JSON.parse(sessionStorage.getItem("userInfo")).token;
     axios
-      .get("http://localhost:3000/api/post/userPosts/" + username)
+      .get("http://localhost:3000/api/post/userPosts/" + username, {
+        headers: {
+            "Content-type": "application/json",
+            'Authorization': 'Bearer ' + token,
+          },
+      })
       .then((res) => {
         this.posts = res.data;
       })

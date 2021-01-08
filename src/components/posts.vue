@@ -4,7 +4,10 @@
       <h3 class="post__title">{{ item.title }}</h3>
       <div class="post__info">
         <p class="post__info__username">
-          Poster par {{ item.username }} le {{ item.createdAt }}
+          Posté par {{ item.username }} le
+          <span date="2020-08-07T11:32:01.592Z" format="DD-MM-YYYY">{{
+            item.createdAt
+          }}</span>
         </p>
         <div @click="(reportThisPost = item.id), postReport()">
           <i class="fas fa-exclamation-circle"></i>
@@ -22,7 +25,10 @@
         <button
           type="button"
           class="post__button__delete"
-          v-if="userConnected.UserId === item.UserId || userConnected.isAdmin === true"
+          v-if="
+            userConnected.UserId === item.UserId ||
+            userConnected.isAdmin === true
+          "
           @click="(PostId = item.id), deletePost()"
         >
           <i class="fas fa-ban"></i> Supprimer
@@ -38,6 +44,7 @@
         >
           Cliquez-ici pour afficher les commentaires de ce post
         </button>
+
         <div v-if="showComments === item.id">
           <div
             class="comment"
@@ -47,15 +54,24 @@
             <p class="comment__text">{{ comment.text }}</p>
             <div class="comment__info">
               <div class="comment__info__btn">
-                <button @click="(comId = comment.id), deleteComment()" v-if="userConnected.UserId === comment.UserId || userConnected.isAdmin === true">
+                <button
+                  @click="(comId = comment.id), deleteComment()"
+                  v-if="
+                    userConnected.UserId === comment.UserId ||
+                    userConnected.isAdmin === true
+                  "
+                >
                   <i class="far fa-trash-alt"></i>
                 </button>
-                <button @click="(comId = comment.id), commentReport()" v-if="userConnected.UserId !== comment.UserId">
+                <button
+                  @click="(comId = comment.id), commentReport()"
+                  v-if="userConnected.UserId !== comment.UserId"
+                >
                   <i class="fas fa-exclamation-circle"></i>
                 </button>
               </div>
               <p class="comment__info__username">
-                Poster par {{ item.username }} le {{ item.createdAt }}
+                Posté par {{ comment.username }} le {{ comment.createdAt }}
               </p>
             </div>
           </div>
@@ -98,42 +114,50 @@ export default {
 
     deleteComment() {
       let commentId = this.comId;
-      if (confirm("Êtes-vous sûr de vouloir supprimer ce post ?"))
+      let token = this.userConnected.token;
+      if (confirm("Êtes-vous sûr de vouloir supprimer ce commentaire ?"))
         axios
           .delete("http://localhost:3000/api/comment/" + commentId, {
             headers: {
               "Content-type": "application/json",
+              Authorization: "Bearer " + token,
             },
           })
           .then((res) => {
             console.log(res.data);
-            alert("votre commentaire a été effacé avec succès");
+            alert("Votre commentaire a été effacé avec succès.");
             this.$router.go("/actu");
           });
     },
 
     deletePost() {
       let PostId = this.PostId;
-
-      if (confirm("Êtes-vous sûr de vouloir supprimer ce commentaire ?"))
+      let token = this.userConnected.token;
+      if (confirm("Êtes-vous sûr de vouloir supprimer ce post ?"))
         axios
           .delete("http://localhost:3000/api/post/" + PostId, {
             headers: {
               "Content-type": "application/json",
+              Authorization: "Bearer " + token,
             },
           })
           .then((res) => {
             console.log(res.data);
-            alert("votre post a été effacé avec succès");
+            alert("Votre post a été effacé avec succès.");
             this.$router.go("/actu");
           });
     },
 
     showAllComments() {
       let id = this.showComments;
-
+      let token = this.userConnected.token;
       axios
-        .get("http://localhost:3000/api/comment/readAll/" + id)
+        .get("http://localhost:3000/api/comment/readAll/" + id, {
+          headers: {
+            "Content-type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        })
         .then((res) => {
           this.comments = res.data;
         })
@@ -147,54 +171,65 @@ export default {
       let postData = {
         isSignaled: 1,
       };
-      axios
-        .put(
-          "http://localhost:3000/api/post/" + this.reportThisPost,
-          postData,
-          {
-            headers: {
-              "Content-type": "application/json",
-            },
-          }
-        )
-        .then((res) => {
-          console.log(res.data);
-          alert(
-            "Merci pour votre signalement ! Notre équipe va vérifier ce post dès que possible."
-          );
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      let token = this.userConnected.token;
+      if (confirm("Êtes-vous sûr de vouloir signaler ce post ?"))
+        axios
+          .put(
+            "http://localhost:3000/api/post/" + this.reportThisPost,
+            postData,
+            {
+              headers: {
+                "Content-type": "application/json",
+                Authorization: "Bearer " + token,
+              },
+            }
+          )
+          .then((res) => {
+            console.log(res.data);
+            alert(
+              "Merci pour votre signalement ! Notre équipe va vérifier ce post dès que possible."
+            );
+          })
+          .catch((error) => {
+            console.log(error);
+          });
     },
 
     commentReport() {
       let commentData = {
         isSignaled: 1,
       };
-      axios
-        .put("http://localhost:3000/api/comment/" + this.comId, commentData, {
-          headers: {
-            "Content-type": "application/json",
-          },
-        })
-        .then((res) => {
-          console.log(res.data);
-          alert(
-            "Merci pour votre signalement ! Notre équipe va vérifier ce commentaire dès que possible."
-          );
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      let token = this.userConnected.token;
+      if (confirm("Êtes-vous sûr de vouloir signaler ce commentaire ?"))
+        axios
+          .put("http://localhost:3000/api/comment/" + this.comId, commentData, {
+            headers: {
+              "Content-type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          })
+          .then((res) => {
+            console.log(res.data);
+            alert(
+              "Merci pour votre signalement ! Notre équipe va vérifier ce commentaire dès que possible."
+            );
+          })
+          .catch((error) => {
+            console.log(error);
+          });
     },
   },
 
   mounted: function () {
+    let token = this.userConnected.token;
     axios
-      .get("http://localhost:3000/api/post/")
+      .get("http://localhost:3000/api/post/", {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
       .then((res) => {
-        console.log(res.data);
         this.posts = res.data;
       })
       .catch((error) => {
@@ -267,6 +302,9 @@ export default {
       color: white;
       box-shadow: 5px 5px 2px -2px #a5a5a5;
       background-image: linear-gradient(to right, #11998e, #38ef7d);
+      &:hover {
+        cursor: pointer;
+      }
     }
     &__delete {
       border: none;
@@ -286,6 +324,9 @@ export default {
         #bb47af,
         #ae4bb8
       );
+      &:hover {
+        cursor: pointer;
+      }
     }
   }
   .btn_comment {
@@ -293,6 +334,10 @@ export default {
     margin-top: 25px;
     background-color: #f5f5f5;
     font-style: italic;
+    &:hover {
+      text-decoration: underline;
+      cursor: pointer;
+    }
   }
 
   .comment {
@@ -324,6 +369,9 @@ export default {
           width: 60px;
           &:active {
             color: red;
+          }
+          &:hover {
+            cursor: pointer;
           }
         }
       }

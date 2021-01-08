@@ -6,6 +6,7 @@
       </p>
       <p v-if="Comments.length < 0">coucou</p>
     </div>
+    <p v-if="this.Comments.length < 1">Vous n'avez publié aucun commentaire.</p>
   </div>
 </template>
 
@@ -27,8 +28,14 @@ export default {
 
   mounted: function () {
     let UserId = JSON.parse(sessionStorage.getItem("userInfo")).UserId;
+    let token = JSON.parse(sessionStorage.getItem("userInfo")).token;
     axios
-      .get("http://localhost:3000/api/comment/" + UserId +"/usercomments")
+      .get("http://localhost:3000/api/comment/" + UserId +"/usercomments", {
+        headers: {
+            "Content-type": "application/json",
+            'Authorization': 'Bearer ' + token,
+          },
+      })
       .then((res) => {
         this.Comments = res.data;
       })

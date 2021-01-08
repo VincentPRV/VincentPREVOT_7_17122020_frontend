@@ -1,33 +1,27 @@
 <template>
-  <div v-if="userConnected" class="actu">
-    <Header />
-    <h1>Fil d'actualité</h1>
-    <div v-if="userConnected">
-      <Posts />
-    </div>
-  </div>
-  <div v-else class="notConnected">
-    <NotConnected />
-  </div>
+  <div class="notConnected">
+    <router-link to="/"
+      >
+      <img
+      class="img-header"
+      src="../images/icon-left-font-monochrome-black.png"
+      alt="Logo de Groupomania"
+    />
+     <p> Merci de vous connecter pour naviguer sur Groupomania.</p>
+    </router-link>
+  </div>  
 </template>
 
 <script>
-import Header from "@/components/header.vue";
-import Posts from "@/components/posts.vue";
-import NotConnected from "@/components/notConnected.vue";
 
 export default {
-  name: "Actu",
+  name: "NotConnected",
   components: {
-    Header,
-    Posts,
-    NotConnected,
   },
   props: {},
 
   data: () => {
     return {
-      userConnected: sessionStorage.getItem("userInfo"),
     };
   },
 
