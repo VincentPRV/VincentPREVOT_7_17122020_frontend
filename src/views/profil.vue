@@ -25,10 +25,8 @@
           Modifier son profil
         </button>
         <div class="whatToShow">
-           | <button  @click="whatToShow = 3">
-            Modération
-          </button>
-          | <button @click="whatToShow = 1">Posts</button> |
+          | <button @click="whatToShow = 3">Modération</button> |
+          <button @click="whatToShow = 1">Posts</button> |
           <button @click="whatToShow = 2">Commentaires</button> |
         </div>
         <div v-if="whatToShow === 1" class="lastPost">
@@ -248,6 +246,7 @@ export default {
   align-items: center;
   margin: auto;
   margin-top: 30px;
+  margin-bottom: 40px;
   flex-direction: column;
   flex-wrap: wrap;
   width: 800px;
@@ -377,6 +376,32 @@ input {
     &:hover {
       cursor: pointer;
       color: #ff1744;
+    }
+  }
+}
+
+@media all and (max-width: 900px) {
+  .profil {
+    width: 700px;
+  }
+  .ctn {
+    width: 600px;
+  }
+}
+
+@media all and (max-device-width: 480px) {
+  .profil {
+    width: 300px;
+  }
+  .ctn {
+    width: 100%;
+    &__footer {
+      &__form {
+        input {
+          width: 95%;
+          font-size: 11px;
+        }
+      }
     }
   }
 }

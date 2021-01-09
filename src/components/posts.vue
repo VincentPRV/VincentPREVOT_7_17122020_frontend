@@ -350,6 +350,7 @@ export default {
       border-radius: 10px;
       font-size: 15px;
       padding: 10px;
+       overflow-wrap: break-word;
       width: 80%;
     }
     &__info {
@@ -372,6 +373,7 @@ export default {
           }
           &:hover {
             cursor: pointer;
+            color: red;
           }
         }
       }
@@ -382,6 +384,29 @@ export default {
       font-style: italic;
       text-align: right;
       width: 55%;
+    }
+  }
+}
+
+@media all and (max-width: 900px) {
+  .post {
+    width: 500px;
+  }
+}
+
+@media all and (max-device-width: 480px) {
+  .ui {
+    width: 300px;
+  }
+  .post {
+    width: 250px;
+  }
+  .comment {
+    font-size: inherit;
+    font-size: 10px;
+    &__text {
+      font-size: inherit;
+     
     }
   }
 }

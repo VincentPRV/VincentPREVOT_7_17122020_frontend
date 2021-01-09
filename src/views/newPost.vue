@@ -80,7 +80,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 .ctn {
-  width: 500px;
+  width: 600px;
   background-color: #F5F5F5;
   margin: auto;
   margin-top: 50px;
@@ -93,7 +93,7 @@ export default {
   box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.06);
 
   &__text {
-    width: 80%;
+    width: 100%;
     margin: 20px 0px 20px 0px;
     height: 60%;
     resize: none;
@@ -121,6 +121,28 @@ export default {
       rgba(255, 23, 68, 1) 35%,
       rgba(183, 28, 28, 1) 100%
     );
+  }
+}
+
+@media all and (max-width: 900px) {
+  .ctn {
+    &__text {
+      width: 500px;
+      font-size: 10px;
+    }
+  }
+}
+
+@media all and (max-device-width: 480px) {
+  .newPost {
+   width: 300px;
+  }
+  .ctn{
+   
+    width: 280px;
+    &__text {
+      width: 250px;
+    }
   }
 }
 </style>

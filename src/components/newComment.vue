@@ -40,17 +40,17 @@ export default {
   methods: {
     creatComment() {
       this.newComment.UserId = JSON.parse(this.userConnected).UserId;
-      
+
       this.newComment.PostId = sessionStorage.getItem("PostId");
       sessionStorage.removeItem("PostId");
       let token = JSON.parse(this.userConnected).token;
-      console.log(token)
-     let url = "http://localhost:3000/api/comment/";
+      console.log(token);
+      let url = "http://localhost:3000/api/comment/";
       axios
         .post(url, this.newComment, {
           headers: {
             "Content-type": "application/json",
-            'Authorization': 'Bearer ' + token,
+            Authorization: "Bearer " + token,
           },
         })
         .then((res) => {
@@ -66,6 +66,11 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+.newComment {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .ctn {
   height: 100%;
   display: flex;
@@ -73,7 +78,7 @@ export default {
   align-items: center;
   justify-content: center;
   &__text {
-    margin: 10px 0px 10px 0px;
+    margin: 10px 0px 10px -15px;
     border-radius: 20px;
     padding: 15px;
     resize: none;
@@ -97,6 +102,24 @@ export default {
       rgba(255, 23, 68, 1) 35%,
       rgba(183, 28, 28, 1) 100%
     );
+  }
+}
+
+@media all and (max-width: 900px) {
+  .ctn {
+    &__text {
+      width: 100%;
+      font-size: 10px;
+    }
+  }
+}
+
+@media all and (max-device-width: 480px) {
+  .ctn {
+    &__text {
+      width: 150px;
+       font-size: 10px;
+    }
   }
 }
 </style>

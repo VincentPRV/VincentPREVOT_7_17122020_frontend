@@ -33,33 +33,23 @@ export default {
 
   methods: {},
 
-  mounted: () => {
-    
-  },
+  mounted: () => {},
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-.notConnected {
-  width: 100%;
-  height: 500px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  a{
-    text-decoration: none;
-    font-size: 20px;
-    color: black;
+
+  @media all and (max-width: 900px) {
+    .actu {
+      font-size: 12px;
+      max-width: 700px;
+    }
   }
-  img {
-    //width: 300px;
-    height: 150px;
-    
-  }
-  &:hover{
-    text-decoration:underline;
-  }
+
+@media all and (max-device-width: 480px){
+    .actu {      
+        max-width: 320px;
+    }
 }
 </style>

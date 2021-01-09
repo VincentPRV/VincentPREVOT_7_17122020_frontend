@@ -40,6 +40,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+.loginSignup {
+    width: 100%;
+  }
+
 button {
   width: 150px;
   height: 30px;
@@ -69,4 +73,14 @@ h2 {
     cursor: pointer;
   }
 }
+@media all and (max-width: 900px) {
+  .loginSignup {
+    width: 700px;
+   
+  }
+  .ctn {
+    width: 600px;
+  }
+}
+
 </style>

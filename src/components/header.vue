@@ -77,4 +77,36 @@ export default {
   margin-left: 50px;
   font-size: 30px;
 }
+
+@media all and (max-width: 900px) {
+  .header {
+    font-size: 13px;
+    max-width: 700px;
+  }
+  .img-header {
+    width: 100px;
+  }
+}
+
+@media all and (max-device-width: 480px) {
+  .header {
+    max-width: 320px;
+    flex-direction: column;
+  }
+  #nav {
+    width: 100%;
+    height: 100%;
+    a {
+      padding: 5px;
+    }
+  }
+  
+  .img-header {
+    width: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+  }
+}
 </style>
