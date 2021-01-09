@@ -25,7 +25,7 @@ export default {
 
   methods: {},
 
-  mounted: function () {
+  mounted: function () {// création de la methods pour récupérer l'ensemble des posts publié par l'utilisateur connecté.
     let username = JSON.parse(sessionStorage.getItem("userInfo")).username;
     let token = JSON.parse(sessionStorage.getItem("userInfo")).token;
     axios

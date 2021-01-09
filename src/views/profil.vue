@@ -131,7 +131,7 @@ export default {
     };
   },
 
-  methods: {
+  methods: {// création de la methods pour récupérer effacer le compte de l'utilisateur connecté.
     deleteUser() {
       let id = JSON.parse(sessionStorage.getItem("userInfo")).UserId;
 
@@ -148,7 +148,7 @@ export default {
         window.location.href = "http://localhost:8080";
       }
     },
-
+// création de la methods pour vérifier les données rentré dans les inputs.
     verifFields() {
       this.errors.username = false;
       this.errors.email = false;
@@ -175,7 +175,7 @@ export default {
         return true;
       }
     },
-
+// création de la methods pour récupérer modifier les données de l'utilisateur connecté.
     updateProfil() {
       if (this.verifFields()) {
         let modifyUser = { ...this.user };
@@ -209,7 +209,7 @@ export default {
           });
       }
     },
-
+// création de la methods pour récupérer l'ensemble des données de l'utilisateur connecté.
     getOneUser() {
       let token = this.userConnected.token;
       axios

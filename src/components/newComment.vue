@@ -38,6 +38,7 @@ export default {
   },
 
   methods: {
+    // création de la methods pour créer un commentaire.
     creatComment() {
       this.newComment.UserId = JSON.parse(this.userConnected).UserId;
 

@@ -52,6 +52,7 @@ export default {
   },
   methods: {
     signup() {
+      // création de la methods pour la création du compte utilisateur.
       if (this.verifFields()) {
         axios
           .post("http://localhost:3000/api/auth/signup", this.user, {
@@ -71,7 +72,7 @@ export default {
           });
       }
     },
-
+// création de la methods de vérification des inputs.
     verifFields() {
       this.errors.username = false;
       this.errors.email = false;

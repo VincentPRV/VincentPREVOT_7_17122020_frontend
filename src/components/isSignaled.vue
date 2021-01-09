@@ -60,6 +60,7 @@ export default {
   },
 
   methods: {
+    // création de la methods pour supprimer le post.
     deletePost() {
       let PostId = this.PostId;
       let token = this.userConnected.token;
@@ -77,7 +78,7 @@ export default {
             this.$router.go("/profil");
           });
     },
-
+    // création de la methods pour supprimer le commentaire.
     deleteComment() {
       let CommentId = this.CommentId;
       let token = this.userConnected.token;
@@ -95,57 +96,58 @@ export default {
             this.$router.go("/profil");
           });
     },
-
+    // création de la methods pour réhabiliter le post.
     validPost() {
       let PostId = this.PostId;
       let token = this.userConnected.token;
       let postData = {
         isSignaled: 0,
       };
-       if (confirm("Êtes-vous sûr de vouloir valider ce post ?"))
-      axios
-        .put("http://localhost:3000/api/post/" + PostId, postData, {
-          headers: {
-            "Content-type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        })
-        .then((res) => {
-          console.log(res.data);
-          alert("Signalement retiré sur ce post.");
-          this.$router.go("/profil");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      if (confirm("Êtes-vous sûr de vouloir valider ce post ?"))
+        axios
+          .put("http://localhost:3000/api/post/" + PostId, postData, {
+            headers: {
+              "Content-type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          })
+          .then((res) => {
+            console.log(res.data);
+            alert("Signalement retiré sur ce post.");
+            this.$router.go("/profil");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
     },
-  
-   validComment() {
+    // création de la methods pour réhabiliter le commentaire.
+    validComment() {
       let CommentId = this.CommentId;
       let token = this.userConnected.token;
       let commentData = {
         isSignaled: 0,
       };
       if (confirm("Êtes-vous sûr de vouloir valider ce commentaire ?"))
-      axios
-        .put("http://localhost:3000/api/comment/" + CommentId, commentData, {
-          headers: {
-            "Content-type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        })
-        .then((res) => {
-          console.log(res.data);
-          alert("Signalement retiré sur ce commentaire.");
-          this.$router.go("/profil");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+        axios
+          .put("http://localhost:3000/api/comment/" + CommentId, commentData, {
+            headers: {
+              "Content-type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          })
+          .then((res) => {
+            console.log(res.data);
+            alert("Signalement retiré sur ce commentaire.");
+            this.$router.go("/profil");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
     },
   },
 
   mounted: function () {
+    // création d'une request multiple pour récupérer l'ensemble des commentaires et post signalé'.
     let one = "http://localhost:3000/api/post/isSignaled";
     let two = "http://localhost:3000/api/comment/isSignaled";
 
@@ -179,6 +181,7 @@ export default {
     width: 80%;
     padding: 10px;
     border-radius: 15px;
+    word-wrap: break-word;
     background-color: #f5f5f5;
     -webkit-box-shadow: 0px 10px 13px -7px #000000,
       5px 5px 15px 5px rgba(0, 0, 0, 0);

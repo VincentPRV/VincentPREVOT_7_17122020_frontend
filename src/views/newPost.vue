@@ -53,6 +53,7 @@ export default {
   },
 
   methods: {
+    // création de la methods pour créer un post.
     creatPost(e) {
       e.preventDefault();
       this.newPost.UserId = this.userConnected.UserId;
@@ -62,12 +63,12 @@ export default {
         .post("http://localhost:3000/api/post/", this.newPost, {
           headers: {
             "Content-type": "application/json",
-            'Authorization': 'Bearer ' + token,
+            Authorization: "Bearer " + token,
           },
         })
         .then((res) => {
           console.log(res);
-          alert("Post créé avec succès !")
+          alert("Post créé avec succès !");
           window.location.href = "http://localhost:8080/#/actu";
         });
     },
@@ -81,7 +82,7 @@ export default {
 <style scoped lang="scss">
 .ctn {
   width: 600px;
-  background-color: #F5F5F5;
+  background-color: #f5f5f5;
   margin: auto;
   margin-top: 50px;
   height: 400px;
@@ -135,10 +136,9 @@ export default {
 
 @media all and (max-device-width: 480px) {
   .newPost {
-   width: 300px;
+    width: 300px;
   }
-  .ctn{
-   
+  .ctn {
     width: 280px;
     &__text {
       width: 250px;

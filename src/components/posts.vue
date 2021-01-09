@@ -108,10 +108,11 @@ export default {
   },
 
   methods: {
+    // récupération du PostId au click pour la méthode qui sera créer plus tard de création de commentaire sur ce même post.
     replyComment() {
       sessionStorage.setItem("PostId", this.reply.PostId);
     },
-
+// création de la methods pour supprimer le commentaire.
     deleteComment() {
       let commentId = this.comId;
       let token = this.userConnected.token;
@@ -129,7 +130,7 @@ export default {
             this.$router.go("/actu");
           });
     },
-
+// création de la methods pour supprimer le post.
     deletePost() {
       let PostId = this.PostId;
       let token = this.userConnected.token;
@@ -147,7 +148,7 @@ export default {
             this.$router.go("/actu");
           });
     },
-
+// création de la methods pour récupérer l'ensemble des commentaire lié au post.
     showAllComments() {
       let id = this.showComments;
       let token = this.userConnected.token;
@@ -165,7 +166,7 @@ export default {
           console.log(error);
         });
     },
-
+// création de la methods pour signalé à l'admin le post.
     postReport() {
       console.log(this.reportThisPost);
       let postData = {
@@ -194,7 +195,7 @@ export default {
             console.log(error);
           });
     },
-
+// création de la methods pour signalé à l'admin le commentaire.
     commentReport() {
       let commentData = {
         isSignaled: 1,
@@ -221,6 +222,7 @@ export default {
   },
 
   mounted: function () {
+    // création de la methods pour récupérer l'ensemble des posts.
     let token = this.userConnected.token;
     axios
       .get("http://localhost:3000/api/post/", {

@@ -31,6 +31,7 @@ export default {
   },
 
   methods: {
+    // création de la method logout, qui efface le storage
     logout() {
       window.location.href = "http://localhost:8080";
       sessionStorage.removeItem("userInfo");

@@ -6,7 +6,7 @@ import Profil from '../views/profil.vue'
 import NewPost from '../views/newPost.vue'
 
 Vue.use(VueRouter)
-
+// création des différentes routes menant aux pages du site.
 const routes = [
   {
     path: '/actu',

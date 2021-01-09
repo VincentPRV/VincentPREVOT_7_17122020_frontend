@@ -30,6 +30,7 @@ export default {
     };
   },
   methods: {
+    // création de la methods pour se connecter.
     login() {
       axios
         .post("http://localhost:3000/api/auth/login", this.user, {

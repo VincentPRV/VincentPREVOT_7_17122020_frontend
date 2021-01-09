@@ -26,7 +26,7 @@ export default {
 
   methods: {},
 
-  mounted: function () {
+  mounted: function () {// création de la methods pour récupérer l'ensemble des commentaires publié par l'utilisateur connecté.
     let UserId = JSON.parse(sessionStorage.getItem("userInfo")).UserId;
     let token = JSON.parse(sessionStorage.getItem("userInfo")).token;
     axios
