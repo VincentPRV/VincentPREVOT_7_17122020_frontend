@@ -71,7 +71,7 @@
                 </button>
               </div>
               <p class="comment__info__username">
-                Posté par {{ comment.username }} le {{ comment.createdAt }}
+                Posté par {{ comment.User.username }} le {{ comment.createdAt }}
               </p>
             </div>
           </div>
@@ -84,6 +84,7 @@
 <script>
 import axios from "axios";
 import NewComment from "@/components/newComment.vue";
+import {formatTimes} from "../service/utils";
 export default {
   name: "Posts",
   components: {
@@ -108,7 +109,7 @@ export default {
   },
 
   methods: {
-    // récupération du PostId au click pour la méthode qui sera créer plus tard de création de commentaire sur ce même post.
+    // récupération du PostId au click pour la méthode qui sera créé plus tard pour la création de commentaire sur ce même post.
     replyComment() {
       sessionStorage.setItem("PostId", this.reply.PostId);
     },
@@ -148,7 +149,7 @@ export default {
             this.$router.go("/actu");
           });
     },
-// création de la methods pour récupérer l'ensemble des commentaire lié au post.
+// création de la methods pour récupérer l'ensemble des commentaires lié au post.
     showAllComments() {
       let id = this.showComments;
       let token = this.userConnected.token;
@@ -160,13 +161,16 @@ export default {
           },
         })
         .then((res) => {
-          this.comments = res.data;
+          this.comments = res.data.map(comment => {
+            comment.createdAt = formatTimes(comment.createdAt);
+            return comment
+          });
         })
         .catch((error) => {
           console.log(error);
         });
     },
-// création de la methods pour signalé à l'admin le post.
+// création de la methods pour signaler à l'admin le post.
     postReport() {
       console.log(this.reportThisPost);
       let postData = {
@@ -195,7 +199,7 @@ export default {
             console.log(error);
           });
     },
-// création de la methods pour signalé à l'admin le commentaire.
+// création de la methods pour signaler à l'admin le commentaire.
     commentReport() {
       let commentData = {
         isSignaled: 1,
@@ -232,8 +236,11 @@ export default {
         },
       })
       .then((res) => {
-        this.posts = res.data;
-      })
+          this.posts = res.data.map(post => {
+            post.createdAt = formatTimes(post.createdAt);
+            return post
+          });
+        })
       .catch((error) => {
         console.log(error);
       });
